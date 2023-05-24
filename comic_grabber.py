@@ -4,9 +4,10 @@ import urllib.parse
 
 import requests
 
-from packages import shared_variables as sv
+from packages import shared_variables as sv, downloader_functions as df
+from packages.column_builder import build_column_layout
 from packages.comicextra_processor import comic_extra
-from packages.request_builder import soup_builder, hyphen_remove, issue_padding
+from packages.request_builder import soup_builder
 
 
 def arg_parser():
@@ -46,29 +47,18 @@ else:
     search_response = requests.get(search_url, headers=sv.headers)
     search_data = search_response.json()
 
+    issue_info = []
+
     comic_suggestions = search_data['suggestions']
 
-    max_column_width = 65
-
-    num_cols = 2
-    num_results = len(comic_suggestions)
-    num_rows = (num_results + num_cols - 1) // num_cols
-
     print(f'\nShowing results for : {sv.YELLOW}{sv.comic_name}{sv.RESET}\n')
-    for row in range(num_rows):
-        for col in range(num_cols):
-            index = col * num_rows + row
-            if index < num_results:
-                comic_info = comic_suggestions[index]
-                comic_name = comic_info['value']
-                comic_name = hyphen_remove(comic_name)
-                comic_data = comic_info['data']
+    for row in comic_suggestions:
+        comic_name = row['value']
+        comic_name = df.hyphen_remove(comic_name)
+        comic_data = row['data']
+        issue_info.append((comic_name, comic_data))
 
-                selection_number = (index + 1)
-                formatted_string = issue_padding(selection_number, comic_name)
-                padded_content = formatted_string.ljust(max_column_width)
-                print(padded_content, end='')
-        print()
+    build_column_layout(issue_info)
 
     selection = input(f'\n{sv.YELLOW}Enter the number corresponding to the series you want (or "'
                       f'{sv.RESET}q{sv.YELLOW}" to quit): {sv.RESET}')
