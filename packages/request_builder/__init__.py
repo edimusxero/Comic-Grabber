@@ -30,11 +30,36 @@ def soup_builder(comic_series):
             chapter_list.append((issue_title, issue_url))
 
     sorted_results = natsorted(chapter_list, key=lambda x: x[1])
-    print()
 
-    for index, issue in enumerate(sorted_results, 1):
-        issue_title, issue_url = issue
-        print(df.issue_padding(index, issue_title))
+    print()
+    num_columns = None
+
+    if len(sorted_results) > 10:
+        num_columns = 2
+
+    if len(sorted_results) > 20:
+        num_columns = 3
+
+    if num_columns:
+        num_rows = (len(sorted_results) + num_columns - 1) // num_columns
+
+        max_title_length = max(len(sorted_results[i][0]) for i in range(len(sorted_results)))
+        column_width = max_title_length + 5  # Add additional padding between columns
+
+        for i in range(num_rows):
+            for j in range(num_columns):
+                index = i + j * num_rows
+                if index < len(sorted_results):
+                    issue_title = sorted_results[index][0]
+                    padding = df.issue_padding(index + 1, issue_title)
+                    output = "{:<{}}".format(padding, column_width)
+                    print(output, end='')
+            print()
+    else:
+        for index, issue in enumerate(sorted_results, 1):
+            issue_title = issue[0]
+            padding = df.issue_padding(index, issue_title)
+            print(padding)
 
     # Prompt the user for input
     selection = input(f'\n{sv.YELLOW}Enter the number of the comic issue you wish to download '
