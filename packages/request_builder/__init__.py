@@ -44,7 +44,7 @@ def soup_builder(comic_series):
         num_rows = (len(sorted_results) + num_columns - 1) // num_columns
 
         max_title_length = max(len(sorted_results[i][0]) for i in range(len(sorted_results)))
-        column_width = max_title_length + 5  # Add additional padding between columns
+        column_width = max_title_length + 20  # Add additional padding between columns
 
         for i in range(num_rows):
             for j in range(num_columns):
