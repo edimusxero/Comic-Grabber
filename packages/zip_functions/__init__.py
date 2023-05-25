@@ -5,6 +5,7 @@ import shutil
 import zipfile
 
 from packages import shared_variables as sv
+import packages.downloader_functions as df
 
 
 def zip_folder(folder_path):
@@ -34,7 +35,7 @@ def extract_issue_number(comic_title):
     if match:
         issue_number = int(match.group(1))
 
-        if issue_number:
+        if issue_number is not None:
             # Apply zero padding based on the value
             if issue_number < 10:
                 padded_number = f'00{str(issue_number)}'
@@ -42,7 +43,8 @@ def extract_issue_number(comic_title):
                 padded_number = f'0{str(issue_number)}'
             else:
                 padded_number = f'{str(issue_number)}'
+
             # Replace the issue number in the title with the padded number
-            return re.sub(r'#(\d+)', f'#{padded_number}', comic_title)
+            return re.sub(r'#(\d+)', f'#{padded_number}', df.hyphen_remove(comic_title))
     else:
         return re.sub(r'#', '', comic_title)

@@ -12,7 +12,7 @@ from packages.zip_functions import zip_folder
 
 
 def hyphen_remove(deformed_name):
-    fixed_name = re.sub(r"-(?=\))", "", deformed_name)
+    fixed_name = re.sub(r"-(?=\))", "", str(deformed_name))
     return fixed_name.replace('&amp;', '&')
 
 
@@ -115,8 +115,8 @@ def image_downloader_function(input_selection, sorted_chapters):
 
         # Check if the selected number is within the valid range
         if 1 <= selected_number <= len(sorted_chapters):
-            issue_url = sorted_chapters[selected_number - 1][0]
-            issue_title = sorted_chapters[selected_number - 1][1]
+            issue_title = sorted_chapters[selected_number - 1][0]
+            issue_url = sorted_chapters[selected_number - 1][1]
             issue_title = hyphen_remove(issue_title)
             print(f'\n{sv.BROWN}{issue_title}{sv.RESET} is preparing to download\n')
             grab_issue_pages(issue_url, issue_title)

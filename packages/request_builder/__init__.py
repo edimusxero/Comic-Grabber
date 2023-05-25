@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-import re
 from concurrent.futures import ThreadPoolExecutor
 
 import requests
@@ -28,16 +27,14 @@ def soup_builder(comic_series):
             issue_url = issue_link['href']
             issue_title = issue_link.text.strip()
             issue_title = extract_issue_number(issue_title)
-            chapter_list.append((issue_url, issue_title))
+            chapter_list.append((issue_title, issue_url))
 
     sorted_results = natsorted(chapter_list, key=lambda x: x[1])
     print()
 
-    for issue_num, result in enumerate(sorted_results, 1):
-        issue_title = result[1]
-        issue_title = df.hyphen_remove(issue_title)
-        number_string = f'{issue_num:2}' if issue_num < 10 else str(issue_num)
-        print(f'{number_string}. {issue_title}')
+    for index, issue in enumerate(sorted_results, 1):
+        issue_title, issue_url = issue
+        print(df.issue_padding(index, issue_title))
 
     # Prompt the user for input
     selection = input(f'\n{sv.YELLOW}Enter the number of the comic issue you wish to download '
@@ -53,7 +50,7 @@ def soup_builder(comic_series):
         print(f'\n{sv.BROWN}Downloading all available issues{sv.RESET}\n')
 
         with ThreadPoolExecutor(max_workers=10) as executor:
-            download_tasks = [executor.submit(grab_issue_pages, single_issue[0], df.hyphen_remove(single_issue[1])) for
+            download_tasks = [executor.submit(grab_issue_pages, single_issue[1], single_issue[0]) for
                               single_issue in sorted_results]
 
             for future in download_tasks:
