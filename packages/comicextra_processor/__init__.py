@@ -183,6 +183,9 @@ def comic_extra(search_string, user_search):
             h3 = div.find('h3')
             if h3:
                 issue_title = h3.text.strip()
+                if issue_title == 'Not found':
+                    print(f"No results found for : {sv.YELLOW}{sv.comic_name}{sv.RESET}\n")
+                    exit(0)
                 issue_url = h3.find('a')['href']
                 issues.append((issue_title, issue_url))
 

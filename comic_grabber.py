@@ -51,6 +51,10 @@ else:
 
     comic_suggestions = search_data['suggestions']
 
+    if len(comic_suggestions) == 0:
+        print(f'\nNothing found for : {sv.YELLOW}{sv.comic_name}{sv.RESET}\n')
+        exit(0)
+
     print(f'\nShowing results for : {sv.YELLOW}{sv.comic_name}{sv.RESET}\n')
     for row in comic_suggestions:
         comic_name = row['value']
