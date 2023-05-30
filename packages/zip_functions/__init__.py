@@ -31,6 +31,8 @@ def zip_folder(folder_path):
 
 def extract_issue_number(comic_title):
     # Extract the issue number using regular expressions
+    if " Issue " in comic_title:
+        comic_title = comic_title.replace(" Issue ", " ")
     match = re.search(r'#(\d+)', comic_title)
     if match:
         issue_number = int(match.group(1))

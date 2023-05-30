@@ -115,7 +115,7 @@ def image_verifier(image_files):
     with alive_bar(len(image_files),
                    bar='fish',
                    spinner='bubbles',
-                   title=f'{sv.YELLOW}Checking for bans :{sv.RESET}'
+                   title=f'{sv.YELLOW}Checking for bans :{sv.RESET}',
                    ) as bar:
         for img in image_files:
             image = cv2.imread(img)
@@ -133,7 +133,7 @@ def image_verifier(image_files):
 
                 if ssim_score is None:
                     print(f'{sv.RED}Failed to process Images{sv.RESET}')
-                if ssim_score < 0.5:
+                if ssim_score < 1.0:
                     if reference_file == 'error.jpg':
                         sv.mark_for_deletion = True
 

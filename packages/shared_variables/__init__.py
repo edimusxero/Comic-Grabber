@@ -19,6 +19,7 @@ ban_option = False
 alt_option = ""
 comic_name = ""
 mark_for_deletion = False
+max_results = ""
 
 banned_dir = os.path.join(root_dir, 'banned')
 
@@ -37,7 +38,7 @@ download_folder = config['download_folder']
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-                  'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36'
+                  'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36'
 }
 
 
